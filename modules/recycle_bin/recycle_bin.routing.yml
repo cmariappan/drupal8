@@ -1,0 +1,17 @@
+recycle_bin.page:
+  path: '/page/recycle_bin'
+  defaults:
+    _controller: '\Drupal\recycle_bin\Controller\RecycleBinController::myRecycleBin'
+    _title: 'Recycle Bin'
+  path: '/page/redirect_recycle_bin'
+  defaults:
+    _controller: '\Drupal\recycle_bin\Controller\RecycleBinController::redirectRecycleBin'
+    _title: 'Recycle Bin'
+  requirements: 
+    _permission: 'access content'
+recycle_bin.page.fulfillment_guard:
+    class: Drupal\recycle_bin\Guard\FulfillmentGuard
+    tags:
+      - { name: state_machine.guard, group: commerce_order }
+
+

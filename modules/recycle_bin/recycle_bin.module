@@ -1,0 +1,32 @@
+<?php
+/**
+ * @File
+ * Recycle Bin custom module
+ * @author Mariappan
+ */
+
+/**
+ * Implementing hook_menu().
+ */
+
+
+function recycle_bin_menu() {
+  // The paths given here need to match the ones in example.routing.yml exactly.
+  $items['/page/recycle_bin'] = array(
+    'title' => 'Recycle Bin',
+    'description' => 'This is a recycle bin page.',
+    // The name of the route from example.routing.yml
+    'route' => 'recycle_bin.page',
+  );
+  return $items;
+}
+function recycle_bin_entity_predelete(Drupal\Core\Entity\EntityInterface $entity) {
+  $state = $entity->get('moderation_state');
+  
+  if($state->value != 'recycle_bin'){
+    $entity->set('moderation_state', 'recycle_bin');
+    $entity->save();
+    drupal_set_message(t('The Content Entity moved to Recycle Bin'), 'status', TRUE);
+    return \Drupal\recycle_bin\Controller\RecycleBinController::redirectRecycleBin();
+  }
+}
